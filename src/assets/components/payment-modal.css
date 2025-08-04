@@ -1,0 +1,78 @@
+.payment-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.payment-modal {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  padding: 2rem 2.5rem;
+  max-width: 350px;
+  width: 100%;
+  text-align: center;
+}
+
+.payment-modal h3 {
+  margin-bottom: 1rem;
+  color: #3b82f6;
+}
+
+.payment-modal p {
+  margin-bottom: 1.5rem;
+  color: #444;
+}
+
+.payment-modal label {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.payment-modal input[type="radio"] {
+  margin-right: 0.5rem;
+}
+
+.payment-modal button {
+  margin: 0.5rem 0.5rem 0 0;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background: #3b82f6;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.payment-modal .close-btn {
+  background: #e5e7eb;
+  color: #333;
+}
+
+.already-voted-btn {
+  background: #e5e7eb;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.2s;
+}
+
+.already-voted-btn:hover {
+  background: #d1d5db;
+}

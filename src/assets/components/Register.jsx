@@ -18,14 +18,16 @@ export default function Register() {
   }
 
   return (
-  <div className="form-container">
-    <h2>Register</h2>
-    <form onSubmit={handleRegister}>
-      <input type="email" placeholder="Email" required value={email} onChange={e => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" required value={password} onChange={e => setPassword(e.target.value)} />
-      <button type="submit">Register</button>
-    </form>
-    <p>Already have an account? <a href="/">Login</a></p>
-  </div>
+  <><div className="form-container">
+      <h2>Register</h2>
+      <form onSubmit={handleRegister}>
+        <input type="email" placeholder="Email" required value={email} onChange={e => setEmail(e.target.value)} />
+        <input type="password" placeholder="Password" required value={password} onChange={e => setPassword(e.target.value)} />
+        <button type="submit">Register</button>
+      </form>
+      <p>Already have an account? <a href="/">Login</a></p>
+    </div><footer style={{ textAlign: 'center', marginTop: '2rem', fontSize: '0.9rem', color: '#888' }}>
+        &copy; Altatech Solutions Inc
+      </footer></>
  )
 }
