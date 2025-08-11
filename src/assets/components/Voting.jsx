@@ -3,22 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import './payment-modal.css'
 import VoteHistory from './VoteHistory'
 
-const candidates = [
-  { id: 1, name: 'Daniela Andrea Avanzini Llorente', img: '/candidates-images/daniela.jpg' },
-  { id: 2, name: 'Sophia Elizabeth Guevera Laforteza', img: '/candidates-images/sophia.jpg' },
-  { id: 3, name: 'Meret Manon Sarpong Bannerman', img: '/candidates-images/manon.jpg' },
-  { id: 4, name: 'Jeung Yoon-chae', img: '/candidates-images/yoonchae.jpeg' },
-  { id: 5, name: 'Lara Rajagopalan', img: '/candidates-images/lara.jpeg' },
-  { id: 6, name: 'Megan Meiyok Skiendiel', img: '/candidates-images/megan.jpg' },
-  { id: 7, name: 'Hinari', img: '/candidates-images/hinari.webp' },
-  { id: 8, name: 'Celeste', img: '/candidates-images/celeste.webp' },
-  { id: 9, name: 'Emily', img: '/candidates-images/emily.webp' },
-  { id: 10, name: 'Karlee', img: '/candidates-images/karlee.webp' },
-  { id: 11, name: 'Iliya', img: '/candidates-images/iliya.webp' },
-  { id: 12, name: 'Nayoung', img: '/candidates-images/nayoung.webp' },
-  { id: 13, name: 'Lexie', img: '/candidates-images/lexie.jpeg' }
-]
-
 export default function Voting() {
   const navigate = useNavigate()
   const user = localStorage.getItem("currentUser")
@@ -28,18 +12,54 @@ export default function Voting() {
   const [method, setMethod] = useState('')
   const [selectedCandidate, setSelectedCandidate] = useState(null)
   const [showHistory, setShowHistory] = useState(false)
+  const [candidates, setCandidates] = useState([])
 
+  // Load candidates and vote counts
   useEffect(() => {
     if (!user) return navigate('/')
 
+    // Load saved candidates from localStorage (from Admin.jsx)
+    const storedCandidates = JSON.parse(localStorage.getItem('candidates'))
+    if (storedCandidates && storedCandidates.length > 0) {
+      setCandidates(storedCandidates)
+    } else {
+      // Fallback to default hardcoded list if no admin data exists yet
+      setCandidates([
+        { id: 1, name: 'Candidate 1', info: 'Info here', img: '/default.jpg' },
+        { id: 2, name: 'Candidate 2', info: 'Info here', img: '/default.jpg' },
+        { id: 3, name: 'Candidate 3', info: 'Info here', img: '/default.jpg' },
+        { id: 4, name: 'Candidate 4', info: 'Info here', img: '/default.jpg' },
+        { id: 5, name: 'Candidate 5', info: 'Info here', img: '/default.jpg' },
+        { id: 6, name: 'Candidate 6', info: 'Info here', img: '/default.jpg' },
+        { id: 7, name: 'Candidate 7', info: 'Info here', img: '/default.jpg' },
+        { id: 8, name: 'Candidate 8', info: 'Info here', img: '/default.jpg' },
+        { id: 9, name: 'Candidate 9', info: 'Info here', img: '/default.jpg' },
+        { id: 10, name: 'Candidate 10', info: 'Info here', img: '/default.jpg' },
+        { id: 11, name: 'Candidate 11', info: 'Info here', img: '/default.jpg' },
+        { id: 12, name: 'Candidate 12', info: 'Info here', img: '/default.jpg' },
+        { id: 13, name: 'Candidate 13', info: 'Info here', img: '/default.jpg' },
+      ])
+    }
+
+    // Check if user already voted today
     const data = JSON.parse(localStorage.getItem(user))
     const lastVote = data?.lastVote
     const today = new Date().toDateString()
     if (lastVote === today) setVoted(true)
 
+    // Load vote counts
     const storedVotes = JSON.parse(localStorage.getItem("voteCounts")) || {}
     setVoteCounts(storedVotes)
-  }, [])
+
+    // Listen for updates from admin
+    const syncFromStorage = () => {
+      const updatedCandidates = JSON.parse(localStorage.getItem('candidates'))
+      if (updatedCandidates) setCandidates(updatedCandidates)
+    }
+    window.addEventListener('storage', syncFromStorage)
+    return () => window.removeEventListener('storage', syncFromStorage)
+
+  }, [navigate, user])
 
   const handleVote = (id) => {
     if (voted) return alert("You've already voted today!")
@@ -108,7 +128,7 @@ export default function Voting() {
             <p className="vote-count"><strong>Votes:</strong> {voteCounts[c.id] || 0}</p>
             {voted ? (
               <button className="already-voted-btn" onClick={() => handleVoteAgain(c)}>
-                Already Voted
+                Click To Vote Again!
               </button>
             ) : (
               <button 
@@ -121,6 +141,7 @@ export default function Voting() {
           </div>
         ))}
       </div>
+
       {showPayment && (
         <div className="payment-modal-overlay">
           <div className="payment-modal">
@@ -142,6 +163,7 @@ export default function Voting() {
           </div>
         </div>
       )}
+
       {showHistory && (
         <VoteHistory user={user} onClose={handleCloseHistory} />
       )}

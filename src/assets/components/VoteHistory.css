@@ -1,0 +1,82 @@
+.vote-history-sidebar {
+  position: fixed;
+  top: 100px; /* distance from top */
+  right: 20px; /* distance from right edge */
+  width: 270px;
+  background: rgba(0, 0, 0, 0.6); /* semi ransparent black */
+  padding: 20px;
+  border-radius: 12px;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  z-index: 999; /* always on top */
+}
+
+.vote-history-sidebar h3 {
+  color: gold;
+  font-size: 22px;
+  margin-bottom: 15px;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+.no-votes {
+  font-size: 16px;
+  color: #ddd;
+  text-align: center;
+  font-style: italic;
+}
+
+.vote-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 300px; /* scroll if too many votes */
+  overflow-y: auto;
+}
+
+.vote-item {
+  background: rgba(255, 215, 0, 0.15); /* light gold tint */
+  border-left: 4px solid gold;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
+}
+
+.vote-item:hover {
+  background: rgba(255, 215, 0, 0.3);
+  transform: scale(1.02);
+}
+
+.vote-item strong {
+  display: block;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 4px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+}
+
+.vote-date {
+  font-size: 14px;
+  color: #ddd;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+}
+
+.candidates-container {
+  margin-right: 340px; /* 300px sidebar + 40px spacing */
+}
+
+/* Responsive fix for smaller screens */
+@media (max-width: 1024px) {
+  .candidates-container {
+    margin-right: 0; /* no sidebar overlap on small screens */
+  }
+
+  .vote-history-sidebar {
+    position: static; /* stop floating */
+    width: 100%;
+    margin-top: 20px;
+  }
+}

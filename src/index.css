@@ -20,13 +20,14 @@ a {
 
 /* Voting Card */
 .candidate-card {
-  background: rgb(199, 195, 195);
+  background:rgba(206, 209, 209, 0.342);
   border-radius: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
   overflow: hidden;
   text-align: center;
   transition: transform 0.2s ease;
   padding-bottom:1rem;
+  font-weight: bold;
 }
 
 .candidate-card:hover {
@@ -44,12 +45,15 @@ a {
   font-size: 1rem;
   font-weight: 600;
   margin: 1rem 0 0.5rem;
+  font-weight: bold;
+  color: #000000;
 }
 
 .vote-count {
   font-size: 0.95rem;
   margin-bottom: 1rem;
-  color: #4b5563;
+  color: #000000;
+  font-weight: bold;
 }
 
 /* Vote Button */
@@ -58,7 +62,7 @@ a {
   border: 1px;
   border-radius: 12rem;
   font-weight: 600;
-  background-color: #d65959;
+  background-color: rgb(34, 158, 207);
   color: rgb(255, 252, 252);
   cursor: pointer;
   transition: background 0.2s ease;
@@ -71,7 +75,7 @@ a {
 
 .vote-btn:disabled {
   background-color: #d1d5db;
-  color: #6b7280;
+  color: #16223a;
   cursor: not-allowed;
 }
 
@@ -84,8 +88,8 @@ a {
 }
 /*Logout Button*/
 .logout-btn {
-  background-color: #ef4444;
-  color: white;
+  background-color: rgb(34, 158, 207);
+  color: rgb(0, 0, 0);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
@@ -166,5 +170,48 @@ a {
 
 h2{
   font-family:serif;
-  font-size: 250%;
+  font-size: 300%;
+  color: rgb(214, 175, 76);
 }
+
+body {
+  background: url('./candidates-images/background.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Poppins', sans-serif;
+}
+
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* Dark overlay */
+  z-index: -1;
+}
+
+h1 {
+  color: gold;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+}
+
+button {
+  background-color: rgb(34, 158, 207);
+  border: none;
+  color: rgb(0, 0, 0);
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  font-weight: bold;
+}
+
+button:hover {
+  transform: scale(1.05);
+  background-color: #ffd700;
+}
+
+

@@ -1,5 +1,5 @@
 import React from 'react';
-import './vote-history.css';
+import './VoteHistory.css';
 
 export default function VoteHistory({ user }) {
   const history = JSON.parse(localStorage.getItem(user + '_history')) || [];
