@@ -1,78 +1,314 @@
+/* Payment Modal Styles */
 .payment-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.3);
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   z-index: 1000;
 }
 
 .payment-modal {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
-  padding: 2rem 2.5rem;
-  max-width: 350px;
-  width: 100%;
-  text-align: center;
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 90%;
 }
 
 .payment-modal h3 {
-  margin-bottom: 1rem;
-  color: #3b82f6;
+  margin: 0 0 20px 0;
+  color: #2c3e50;
+  text-align: center;
 }
 
 .payment-modal p {
-  margin-bottom: 1.5rem;
-  color: #444;
+  margin: 0 0 20px 0;
+  color: #555;
+  text-align: center;
+}
+
+.payment-modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .payment-modal label {
-  display: block;
-  margin-bottom: 1rem;
-  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.payment-modal label:hover {
+  border-color: #667eea;
+  background: #f8f9fa;
 }
 
 .payment-modal input[type="radio"] {
-  margin-right: 0.5rem;
+  margin: 0;
+  cursor: pointer;
 }
 
 .payment-modal button {
-  margin: 0.5rem 0.5rem 0 0;
-  padding: 0.6rem 1.2rem;
+  padding: 12px 20px;
   border: none;
   border-radius: 8px;
-  background: #3b82f6;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s ease;
+}
+
+.payment-modal button[type="submit"] {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.payment-modal button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
 }
 
 .payment-modal .close-btn {
-  background: #e5e7eb;
-  color: #333;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
 }
 
-.already-voted-btn {
-  background: #e5e7eb;
-  color: #333;
+.payment-modal .close-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+/* Voting Status Banner Styles */
+.voting-status-banner {
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin: 20px 0;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(243, 156, 18, 0.3);
+  animation: slideInDown 0.5s ease-out;
+}
+
+.voting-status-banner h3 {
+  margin: 0 0 15px 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.voting-status-banner p {
+  margin: 8px 0;
+  font-size: 16px;
+  opacity: 0.95;
+}
+
+.voting-status-banner strong {
+  color: #fff;
+  font-weight: 700;
+}
+
+/* Loading State Styles */
+.loading-container {
+  text-align: center;
+  padding: 40px 20px;
+  color: #667eea;
+}
+
+.loading-container h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Vote Button States */
+.vote-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.vote-btn:disabled:hover {
+  transform: none !important;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3) !important;
+}
+
+/* Candidate Card Styles */
+.candidate-card {
+  background: transparent;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.candidate-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.candidate-info {
+  padding: 20px;
+  text-align: center;
+  flex: 1;
+}
+
+.candidate-img {
+  width: 120px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 3px solid #e1e8ed;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+
+.candidate-name {
+  margin: 0 0 10px 0;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.candidate-description {
+  margin: 0;
+  color: #e0e0e0;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 40px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.candidate-actions {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Vote Button */
+.vote-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  color: white;
   border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
   border-radius: 8px;
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  font-weight: 500;
   cursor: pointer;
-  margin-top: 1rem;
-  transition: background 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+  text-align: center;
 }
 
-.already-voted-btn:hover {
-  background: #d1d5db;
+.vote-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+}
+
+.vote-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Payment Required Button */
+.payment-required-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+  text-align: center;
+}
+
+.payment-required-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+}
+
+/* Grid Layout */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .candidate-img {
+    width: 100px;
+    height: 130px;
+  }
+  
+  .candidate-name {
+    font-size: 18px;
+  }
+  
+  .candidate-description {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .candidate-card {
+    margin: 0 10px;
+  }
+  
+  .candidate-info {
+    padding: 15px;
+  }
+  
+  .candidate-actions {
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+/* Animations */
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
