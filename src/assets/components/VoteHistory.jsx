@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ApiService from '../../api.js';
 import './VoteHistory.css';
 
 export default function VoteHistory({ user, onClose, candidates = [] }) {
@@ -51,7 +52,7 @@ export default function VoteHistory({ user, onClose, candidates = [] }) {
                   <div key={idx} className="vote-card">
                     <div className="candidate-image-section">
                       <img 
-                        src={candidate.image || 'https://via.placeholder.com/80x100/4A90E2/FFFFFF?text=Photo'} 
+                        src={ApiService.getImageUrl(candidate.image) || 'https://via.placeholder.com/80x100/4A90E2/FFFFFF?text=Photo'} 
                         alt={candidate.name} 
                         className="candidate-history-image"
                       />

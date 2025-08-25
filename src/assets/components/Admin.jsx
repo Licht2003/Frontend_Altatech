@@ -145,7 +145,23 @@ export default function Admin() {
     setError('');
     
     try {
-      await ApiService.updateCandidate(candidate.id, candidate);
+      // Check if there's a new image file to upload
+      if (candidate._imageFile) {
+        // Create FormData for file upload
+        const formData = new FormData();
+        formData.append('name', candidate.name);
+        formData.append('description', candidate.description || '');
+        formData.append('image', candidate._imageFile);
+        
+        // Use a different endpoint for file uploads
+        await ApiService.updateCandidateWithImage(candidate.id, formData);
+        
+        // Remove the temporary file reference
+        delete candidate._imageFile;
+      } else {
+        // Regular update without image
+        await ApiService.updateCandidate(candidate.id, candidate);
+      }
       
       // Update local state
       setCandidates(candidates.map(c => 
@@ -164,11 +180,17 @@ export default function Admin() {
 
   // Photo upload
   const handlePhotoChange = (id, file) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      handleEdit(id, 'image', reader.result);
-    };
-    reader.readAsDataURL(file);
+    if (!file) return;
+    
+    // Create a local URL for preview
+    const imageUrl = URL.createObjectURL(file);
+    
+    // Update the candidate with the file name (not base64)
+    const fileName = file.name;
+    handleEdit(id, 'image', `/candidates-images/${fileName}`);
+    
+    // Store the file reference for later upload
+    handleEdit(id, '_imageFile', file);
   };
 
   // Delete candidate
@@ -308,7 +330,7 @@ export default function Admin() {
             <div className="candidate-content">
               <div className="candidate-image-section">
                 <img 
-                  src={c.image || 'https://via.placeholder.com/150x200/4A90E2/FFFFFF?text=Photo'} 
+                  src={ApiService.getImageUrl(c.image) || 'https://via.placeholder.com/150x200/4A90E2/FFFFFF?text=Photo'} 
                   alt={c.name} 
                   className="candidate-image"
                 />

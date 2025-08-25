@@ -1,7 +1,15 @@
 // Frontend_Altatech/src/api.js
 const API_BASE_URL = 'http://localhost:8000/api';
+const BACKEND_BASE_URL = 'http://localhost:8000';
 
 class ApiService {
+    // Helper function to get full image URL
+    static getImageUrl(imagePath) {
+        if (!imagePath) return null;
+        if (imagePath.startsWith('http')) return imagePath;
+        return `${BACKEND_BASE_URL}${imagePath}`;
+    }
+
     static getAuthHeaders() {
         const token = localStorage.getItem('auth_token');
         return {
@@ -248,6 +256,40 @@ class ApiService {
             return result;
         } catch (error) {
             console.error('API Update Candidate Error:', error);
+            throw error;
+        }
+    }
+
+    static async updateCandidateWithImage(id, formData) {
+        try {
+            const headers = {
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+                'Accept': 'application/json'
+                // Don't set Content-Type for FormData - browser will set it automatically
+            };
+            
+            console.log('Updating candidate with image, headers:', headers);
+            console.log('FormData:', formData);
+            
+            const response = await fetch(`${API_BASE_URL}/candidates/${id}/image`, {
+                method: 'POST',
+                headers: headers,
+                body: formData
+            });
+            
+            console.log('Image update response status:', response.status);
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Image update response error:', errorText);
+                throw new Error(`Failed to update candidate image: ${response.status} ${errorText}`);
+            }
+            
+            const result = await response.json();
+            console.log('Image update response result:', result);
+            return result;
+        } catch (error) {
+            console.error('API Update Candidate Image Error:', error);
             throw error;
         }
     }

@@ -260,7 +260,7 @@ export default function Voting() {
         {candidates.map(c => (
           <div key={c.id} className="candidate-card">
             <div className="candidate-info">
-              <img src={c.image || 'https://via.placeholder.com/150x200/4A90E2/FFFFFF?text=Photo'} alt={c.name} className="candidate-img" />
+              <img src={ApiService.getImageUrl(c.image) || 'https://via.placeholder.com/150x200/4A90E2/FFFFFF?text=Photo'} alt={c.name} className="candidate-img" />
               <h4 className="candidate-name">{c.name}</h4>
               <p className="candidate-description">{c.description || 'No description available'}</p>
             </div>
