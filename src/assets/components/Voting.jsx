@@ -13,6 +13,7 @@ export default function Voting() {
   const [method, setMethod] = useState('')
   const [selectedCandidate, setSelectedCandidate] = useState(null)
   const [showHistory, setShowHistory] = useState(false)
+  const [showVotingStatus, setShowVotingStatus] = useState(false)
   const [candidates, setCandidates] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [votingStatus, setVotingStatus] = useState({
@@ -139,7 +140,6 @@ export default function Voting() {
       });
       
       if (response.success || response.message) {
-        alert(`You voted for ${selectedCandidate.name}! You have used your daily vote.`)
         setCanVote(false)
         setVotingStatus({
           canVote: false,
@@ -150,6 +150,9 @@ export default function Voting() {
             voted_at: new Date().toISOString()
           }
         })
+        
+        // Show the voting status modal
+        setShowVotingStatus(true)
         
         // Update local storage for fallback
         const userData = JSON.parse(localStorage.getItem(user) || '{}')
@@ -214,6 +217,10 @@ export default function Voting() {
 
   const handleShowHistory = () => setShowHistory(true)
   const handleCloseHistory = () => setShowHistory(false)
+  
+  const handleCloseVotingStatus = () => {
+    setShowVotingStatus(false)
+  }
 
   const formatNextVoteDate = (dateString) => {
     if (!dateString) return '';
@@ -228,25 +235,71 @@ export default function Voting() {
 
   return (
     <div className="container">
-      <div className="header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <button onClick={handleShowHistory} className="history-btn" style={{ marginRight: 'auto' }}>Vote History</button>
-        <h2 style={{ margin: '0 auto' }}>Vote for Your Favorite</h2>
-        <button onClick={handleLogout} className="logout-btn">Logout</button>
+      <div className="header" style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        position: 'relative',
+        padding: '0 20px'
+      }}>
+        <button onClick={handleShowHistory} className="history-btn" style={{ 
+          position: 'absolute', 
+          left: '20px' 
+        }}>Vote History</button>
+        <h2 style={{ 
+          margin: '0', 
+          flex: '1', 
+          textAlign: 'center' 
+        }}>Vote for Your Favorite</h2>
+        <button onClick={handleLogout} className="logout-btn" style={{ 
+          position: 'absolute', 
+          right: '20px' 
+        }}>Logout</button>
       </div>
 
-      {/* Voting Status Banner */}
-      {!canVote && votingStatus.todayVote && (
-        <div className="voting-status-banner">
-          <h3>You've Voted Today!</h3>
-          <p>
-            <strong>Voted for:</strong> {votingStatus.todayVote.candidate_name}
-          </p>
-          <p>
-            <strong>Vote type:</strong> {votingStatus.todayVote.vote_type === 'free' ? 'Free Vote' : 'Paid Vote'}
-          </p>
-          <p>
-            <strong>Next vote available:</strong> {formatNextVoteDate(votingStatus.nextVoteDate)}
-          </p>
+      {/* Voting Status Popup Modal */}
+      {!canVote && votingStatus.todayVote && showVotingStatus && (
+        <div className="voting-status-modal-overlay">
+          <div className="voting-status-modal">
+            <div className="voting-status-header">
+              <h3>Vote Cast Successfully!</h3>
+              <button className="close-status-btn" onClick={handleCloseVotingStatus}>✕</button>
+            </div>
+            <div className="voting-status-content">
+              <div className="vote-confirmation">
+                <div className="candidate-vote-info">
+                  <img 
+                    src={ApiService.getImageUrl(candidates.find(c => c.name === votingStatus.todayVote.candidate_name)?.image) || 'https://via.placeholder.com/80x100/4A90E2/FFFFFF?text=Photo'} 
+                    alt={votingStatus.todayVote.candidate_name} 
+                    className="voted-candidate-image"
+                  />
+                  <div className="candidate-vote-details">
+                    <h4 className="voted-candidate-name">{votingStatus.todayVote.candidate_name}</h4>
+                    <p className="vote-type-badge">
+                      {votingStatus.todayVote.vote_type === 'free' ? 'Free Vote' : 'Paid Vote'}
+                    </p>
+                  </div>
+                </div>
+                <div className="vote-details">
+                  <p><strong>Vote Type:</strong> {votingStatus.todayVote.vote_type === 'free' ? 'Free Vote' : 'Paid Vote'}</p>
+                  <p><strong>Vote Date:</strong> {new Date().toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}</p>
+                  <p><strong>Next Vote Available:</strong> {formatNextVoteDate(votingStatus.nextVoteDate)}</p>
+                </div>
+                <div className="vote-actions">
+                  <button className="view-history-btn" onClick={handleShowHistory}>
+                    View Vote History
+                  </button>
+                  <button className="vote-again-btn" onClick={() => setShowPayment(true)}>
+                    Vote Again (Payment Required)
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 

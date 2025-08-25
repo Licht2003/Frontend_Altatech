@@ -304,10 +304,10 @@ export default function Admin() {
 
       {/* Candidates Grid */}
       <div className="candidates-grid">
-        {editedCandidates.map(c => (
+        {editedCandidates.map((c, index) => (
           <div key={c.id} className="candidate-card">
             <div className="candidate-header">
-              <h4>Candidate #{c.id}</h4>
+              <h4>Candidate #{index + 1}</h4>
               <div className="candidate-actions">
                 <button 
                   className="save-candidate-btn" 
@@ -335,11 +335,11 @@ export default function Admin() {
                   className="candidate-image"
                 />
                 <div className="image-upload">
-                  <label htmlFor={`photo-${c.id}`} className="upload-label">
+                  <label htmlFor={`photo-${index + 1}`} className="upload-label">
                     Change Photo
                   </label>
                   <input
-                    id={`photo-${c.id}`}
+                    id={`photo-${index + 1}`}
                     type="file"
                     accept="image/*"
                     onChange={e => handlePhotoChange(c.id, e.target.files[0])}
