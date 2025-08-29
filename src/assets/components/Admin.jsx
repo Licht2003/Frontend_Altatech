@@ -13,6 +13,8 @@ export default function Admin() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [voteCounts, setVoteCounts] = useState({});
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [candidateToDelete, setCandidateToDelete] = useState(null);
   const user = localStorage.getItem("currentUser");
   const userRole = localStorage.getItem("userRole");
   const navigate = useNavigate();
@@ -195,19 +197,22 @@ export default function Admin() {
 
   // Delete candidate
   const handleDeleteCandidate = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this candidate?')) {
-      return;
-    }
+    setCandidateToDelete(id);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!candidateToDelete) return;
 
     setIsLoading(true);
     setError('');
     
     try {
-      await ApiService.deleteCandidate(id);
+      await ApiService.deleteCandidate(candidateToDelete);
       
       // Remove from local state
-      const filtered = candidates.filter(c => c.id !== id);
-      const filteredEdited = editedCandidates.filter(c => c.id !== id);
+      const filtered = candidates.filter(c => c.id !== candidateToDelete);
+      const filteredEdited = editedCandidates.filter(c => c.id !== candidateToDelete);
       
       setCandidates(filtered);
       setEditedCandidates(filteredEdited);
@@ -215,7 +220,7 @@ export default function Admin() {
       // Remove vote counts for deleted candidate
       setVoteCounts(prev => {
         const newCounts = { ...prev };
-        delete newCounts[id];
+        delete newCounts[candidateToDelete];
         return newCounts;
       });
       
@@ -226,7 +231,14 @@ export default function Admin() {
       setError('Failed to delete candidate. Please try again.');
     } finally {
       setIsLoading(false);
+      setShowDeleteModal(false);
+      setCandidateToDelete(null);
     }
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteModal(false);
+    setCandidateToDelete(null);
   };
 
   const handleLogout = () => {
@@ -401,6 +413,23 @@ export default function Admin() {
         ))}
       </div>
       
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && candidateToDelete && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Confirm Deletion</h3>
+            <p>Are you sure you want to delete candidate "{candidates.find(c => c.id === candidateToDelete)?.name}"?</p>
+            <div className="modal-actions">
+              <button onClick={confirmDelete} disabled={isLoading}>
+                {isLoading ? 'Deleting...' : 'Delete'}
+              </button>
+              <button onClick={cancelDelete} disabled={isLoading}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

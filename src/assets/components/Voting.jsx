@@ -141,9 +141,42 @@ export default function Voting() {
       
       if (response.success || response.message) {
         setCanVote(false)
+        
+        // Debug logging to see what the backend returns
+        console.log('Backend response:', response);
+        
+        // Ensure we get the correct next vote date from the backend
+        // Check multiple possible field names and provide fallback
+        let nextVoteDate = response.next_vote_date || 
+                           response.nextVoteDate || 
+                           response.next_vote_date || 
+                           new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+        
+        // Additional validation: ensure the date is actually tomorrow or later
+        try {
+          const parsedDate = new Date(nextVoteDate);
+          const today = new Date();
+          const tomorrow = new Date(today);
+          tomorrow.setDate(today.getDate() + 1);
+          tomorrow.setHours(0, 0, 0, 0);
+          
+          // If the parsed date is today or in the past, use tomorrow
+          if (parsedDate <= today) {
+            nextVoteDate = tomorrow.toISOString();
+            console.log('Date was today or past, corrected to tomorrow:', nextVoteDate);
+          }
+        } catch (error) {
+          console.error('Error validating next vote date:', error);
+          // Fallback to tomorrow
+          const tomorrow = new Date();
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          tomorrow.setHours(0, 0, 0, 0);
+          nextVoteDate = tomorrow.toISOString();
+        }
+        
         setVotingStatus({
           canVote: false,
-          nextVoteDate: response.next_vote_date,
+          nextVoteDate: nextVoteDate,
           todayVote: {
             candidate_name: selectedCandidate.name,
             vote_type: 'free',
@@ -223,9 +256,39 @@ export default function Voting() {
   }
 
   const formatNextVoteDate = (dateString) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
+    // Always calculate tomorrow's date to ensure consistency
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    
+    // If a valid date string is provided and it's clearly tomorrow or later, use it
+    if (dateString) {
+      try {
+        const providedDate = new Date(dateString);
+        
+        // Validate the date
+        if (!isNaN(providedDate.getTime())) {
+          // Check if the provided date is tomorrow or later
+          const providedDateStart = new Date(providedDate);
+          providedDateStart.setHours(0, 0, 0, 0);
+          
+          if (providedDateStart > today) {
+            return providedDate.toLocaleDateString('en-US', { 
+              weekday: 'long', 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error parsing provided date:', error);
+      }
+    }
+    
+    // Always fallback to calculated tomorrow
+    return tomorrow.toLocaleDateString('en-US', { 
       weekday: 'long', 
       year: 'numeric', 
       month: 'long', 
