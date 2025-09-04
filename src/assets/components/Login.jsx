@@ -67,11 +67,6 @@ export default function Login() {
         </form>
         <p>Don't have an account? <a href="/register">Register</a></p>
         
-        <div style={{ marginTop: '2rem', padding: '1rem', backgroundColor: '#f5f5f5', borderRadius: '5px' }}>
-          <h4>Test Accounts:</h4>
-          <p><strong>Admin:</strong> admin@pageant.com / password</p>
-          <p><strong>User:</strong> john@example.com / password</p>
-        </div>
       </div>
       <footer style={{ textAlign: 'center', marginTop: '2rem', fontSize: '0.9rem', color: '#888' }}>
         &copy; Altatech Solutions Inc
